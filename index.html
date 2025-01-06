@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/e2d3c5b807.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
     <div class="container">
         <div class="music-player">
@@ -22,10 +24,58 @@
             <img src="Media/Jai gurudev.jpeg" class="song-img">
             <h1>Ye Chamak Ye Damak</h1>
             <p>Song by Pandit Sudhir Vyas</p>
-            
+
+            <audio id="song">
+                <source
+                    src="Media/ye-chamak-ye-damak-2-0-sab-kuch-sarkar-tumhi-se-hai-original-song-sudhir-vyas-new-ram-bhajan.mp3"
+                    type="audio/mpeg">
+            </audio>
+            <input type="range" value="0" id="progress">
+
+            <div class="controls">
+                <div><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="playIcon"></i></div>
+                <div><i class="fa-solid fa-forward"></i></div>
+
+            </div>
         </div>
     </div>
 
+    <script>
+        let progress = document.getElementById("progress");
+        let song = document.getElementById("song");
+        let playIcon = document.getElementById("playIcon");
 
+        song.onloadedmetadata = function () {
+            progress.max = song.duration;
+            progress.value = song.currentTime;
+        }
+
+        function playPause() {
+            if (playIcon.classList.contains("fa-pause")) {
+                song.pause();
+                playIcon.classList.remove("fa-pause");
+                playIcon.classList.add("fa-play");
+            }
+            else {
+                song.play();
+                playIcon.classList.remove("fa-play");
+                playIcon.classList.add("fa-pause");
+            }
+        }
+        song.ontimeupdate = function () {
+            progress.value = song.currentTime;
+        };
+
+        progress.oninput = function () {
+            song.currentTime = progress.value;
+        };
+        song.onended = function () {
+            playIcon.classList.remove("fa-pause");
+            playIcon.classList.add("fa-play");
+        };
+
+    </script>
 </body>
+
 </html>
